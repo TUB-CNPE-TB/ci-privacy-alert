@@ -1,0 +1,96 @@
+[
+    {
+        "kind": "N",
+        "path": [
+            "paths",
+            "/users",
+            "post",
+            "requestBody",
+            "content",
+            "application/json",
+            "schema",
+            "properties",
+            "age"
+        ],
+        "rhs": {
+            "type": "integer"
+        }
+    },
+    {
+        "kind": "A",
+        "path": [
+            "paths",
+            "/users",
+            "post",
+            "requestBody",
+            "content",
+            "application/json",
+            "schema",
+            "required"
+        ],
+        "index": 1,
+        "item": {
+            "kind": "N",
+            "rhs": "age"
+        }
+    },
+    {
+        "kind": "E",
+        "path": [
+            "paths",
+            "/users",
+            "post",
+            "responses",
+            "201",
+            "content",
+            "application/json",
+            "schema",
+            "properties",
+            "id",
+            "type"
+        ],
+        "lhs": "string",
+        "rhs": "integer"
+    },
+    {
+        "kind": "D",
+        "path": [
+            "paths",
+            "/users/{userId}"
+        ],
+        "lhs": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "name"
+                                    ],
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+]

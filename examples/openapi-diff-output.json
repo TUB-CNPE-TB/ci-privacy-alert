@@ -1,0 +1,245 @@
+{
+    "breakingDifferences": [
+        {
+            "type": "breaking",
+            "action": "remove",
+            "code": "path.remove",
+            "destinationSpecEntityDetails": [],
+            "entity": "path",
+            "source": "openapi-diff",
+            "sourceSpecEntityDetails": [
+                {
+                    "location": "paths./users/{userId}",
+                    "value": {
+                        "get": {
+                            "parameters": [
+                                {
+                                    "name": "userId",
+                                    "in": "path",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "string"
+                                    }
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "The user",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "name"
+                                                ],
+                                                "type": "object"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "type": "breaking",
+            "action": "remove",
+            "code": "request.body.scope.remove",
+            "destinationSpecEntityDetails": [
+                {
+                    "location": "paths./users.post.requestBody.content.application/json.schema",
+                    "value": {
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "age": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": [
+                            "name",
+                            "age"
+                        ],
+                        "type": "object"
+                    }
+                }
+            ],
+            "entity": "request.body.scope",
+            "source": "json-schema-diff",
+            "sourceSpecEntityDetails": [
+                {
+                    "location": "paths./users.post.requestBody.content.application/json.schema",
+                    "value": {
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "name"
+                        ],
+                        "type": "object"
+                    }
+                }
+            ],
+            "details": {
+                "differenceSchema": {
+                    "anyOf": [
+                        {
+                            "properties": {
+                                "age": {
+                                    "type": [
+                                        "array",
+                                        "boolean",
+                                        "null",
+                                        "number",
+                                        "object",
+                                        "string"
+                                    ],
+                                    "not": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "age",
+                                "name"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "properties": {
+                                "age": false,
+                                "name": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "name"
+                            ],
+                            "type": "object"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "breaking",
+            "action": "add",
+            "code": "response.body.scope.add",
+            "destinationSpecEntityDetails": [
+                {
+                    "location": "paths./users.post.responses.201.content.application/json.schema",
+                    "value": {
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ],
+                        "type": "object"
+                    }
+                }
+            ],
+            "entity": "response.body.scope",
+            "source": "json-schema-diff",
+            "sourceSpecEntityDetails": [
+                {
+                    "location": "paths./users.post.responses.201.content.application/json.schema",
+                    "value": {
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ],
+                        "type": "object"
+                    }
+                }
+            ],
+            "details": {
+                "differenceSchema": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "id"
+                    ]
+                }
+            }
+        }
+    ],
+    "breakingDifferencesFound": true,
+    "nonBreakingDifferences": [
+        {
+            "type": "non-breaking",
+            "action": "remove",
+            "code": "response.body.scope.remove",
+            "destinationSpecEntityDetails": [
+                {
+                    "location": "paths./users.post.responses.201.content.application/json.schema",
+                    "value": {
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ],
+                        "type": "object"
+                    }
+                }
+            ],
+            "entity": "response.body.scope",
+            "source": "json-schema-diff",
+            "sourceSpecEntityDetails": [
+                {
+                    "location": "paths./users.post.responses.201.content.application/json.schema",
+                    "value": {
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ],
+                        "type": "object"
+                    }
+                }
+            ],
+            "details": {
+                "differenceSchema": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "id"
+                    ]
+                }
+            }
+        }
+    ],
+    "unclassifiedDifferences": []
+}

@@ -1,0 +1,38 @@
+
+paths
+  - one map entry removed:
+    /users/{userId}:
+      get:
+        parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: "The user"
+            content:
+              application/json:
+                schema:
+                  type: object
+                  required:
+                  - name
+                  properties:
+                    name:
+                      type: string
+
+paths./users.post.requestBody.content.application/json.schema.properties
+  + one map entry added:
+    age:
+      type: integer
+
+paths./users.post.requestBody.content.application/json.schema.required
+  + one list entry added:
+    - age
+
+paths./users.post.responses.201.content.application/json.schema.properties.id.type
+  ± value change
+    - string
+    + integer
+

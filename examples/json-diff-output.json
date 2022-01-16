@@ -1,0 +1,90 @@
+ {
+   openapi: "3.0.1"
+   info: {
+     title: "User Service"
+     version: "1.0.0"
+   }
+   paths: {
+-    /users/{userId}: {
+-      get: {
+-        parameters: [
+-          {
+-            name: "userId"
+-            in: "path"
+-            required: true
+-            schema: {
+-              type: "string"
+-            }
+-          }
+-        ]
+-        responses: {
+-          200: {
+-            description: "The user"
+-            content: {
+-              application/json: {
+-                schema: {
+-                  properties: {
+-                    name: {
+-                      type: "string"
+-                    }
+-                  }
+-                  required: [
+-                    "name"
+-                  ]
+-                  type: "object"
+-                }
+-              }
+-            }
+-          }
+-        }
+-      }
+-    }
+     /users: {
+       post: {
+         requestBody: {
+           content: {
+             application/json: {
+               schema: {
+                 properties: {
++                  age: {
++                    type: "integer"
++                  }
+                   name: {
+                     type: "string"
+                   }
+                 }
+                 required: [
+                   "name"
++                  "age"
+                 ]
+                 type: "object"
+               }
+             }
+           }
+           required: true
+         }
+         responses: {
+           201: {
+             description: "Created"
+             content: {
+               application/json: {
+                 schema: {
+                   properties: {
+                     id: {
+-                      type: "string"
++                      type: "integer"
+                     }
+                   }
+                   required: [
+                     "id"
+                   ]
+                   type: "object"
+                 }
+               }
+             }
+           }
+         }
+       }
+     }
+   }
+ }
