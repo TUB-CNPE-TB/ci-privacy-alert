@@ -21,11 +21,13 @@
     "child-process": "latest",
     "deep-diff": "^1.0.2",
     "js-yaml": "^4.1.0",
-    "json-diff": "^0.7.1",
     "minimist": "^1.2.5",
-    "openapi-diff": "^0.23.5",
     "pg": "latest",
     "pg-connection-string": "latest",
     "uuid": "latest"
+  },
+  "devDependencies": {
+    "openapi-diff": "^0.23.5",
+    "json-diff": "^0.7.1"
   }
 }

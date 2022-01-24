@@ -2,9 +2,7 @@ const parse = require("pg-connection-string").parse;
 const { Pool } = require("pg");
 const { v4: uuidv4 } = require("uuid");
 
-var entry = ""
-
-async function executeTransaction(n, max, client, operation, callback) {
+async function executeTransaction(n, max, client, input, operation, callback) {
   await client.query("BEGIN;");
   while (true) {
     n++;
@@ -12,7 +10,7 @@ async function executeTransaction(n, max, client, operation, callback) {
       throw new Error("Max retry count reached.");
     }
     try {
-      await operation(client, callback);
+      await operation(client, input, callback);
       await client.query("COMMIT;");
       return;
     } catch (err) {
@@ -30,21 +28,35 @@ async function executeTransaction(n, max, client, operation, callback) {
   }
 }
 
-async function insertEntry(client, callback) {
-    const id = await uuidv4();  
+async function insertEntry(client, input, callback) {
+  const id = await uuidv4();
+  const {tableName, serviceName, commit, differences} = input;
   const insertStatement =
-    "INSERT INTO SpecificationChanges (id, differences) VALUES ($1, $2);";
-  await client.query(insertStatement, [id, entry], callback);
+    "INSERT INTO " + tableName + " (id, service_name, commit, differences) VALUES ($1, $2, $3, $4);";
+  await client.query(insertStatement, [id, serviceName, commit, differences], callback);
 }
 
-async function printDatabase(client, callback) {
-    const selectBalanceStatement = "SELECT id, differences FROM SpecificationChanges;";
+async function printDatabase(client, input, callback) {
+    const tableName = input.tableName;
+    const selectBalanceStatement = "SELECT id, service_name, commit, differences FROM " + tableName + ";";
     await client.query(selectBalanceStatement, callback);
 }
 
+function queryCallback(err, res) {
+  if (err) {
+    console.log(err);
+    throw err;
+  } 
+
+  if (res.rows.length > 0) {
+    res.rows.forEach((row) => {
+      console.log(row);
+    });
+  }
+}
 
 // Run the transactions in the connection pool
-async function insert(connectionString, specificationChanges) {
+async function insert(connectionString, databaseName, tableName, serviceName, commit, specificationChanges) {
   connectionString = await connectionString.replace(
       "$HOME",
       process.env.HOME
@@ -52,30 +64,12 @@ async function insert(connectionString, specificationChanges) {
 
   var config = parse(connectionString);
   config.port = 26257;
-  config.database = "teamblueprivacymonitoring";
+  config.database = databaseName;
   const pool = new Pool(config);
 
-  // Connect to database
   const client = await pool.connect();
 
-  // Callback
-  function cb(err, res) {
-    if (err) throw err;
-
-    if (res.rows.length > 0) {
-      console.log("New account balances:");
-      res.rows.forEach((row) => {
-        console.log(row);
-      });
-    }
-  }
-
-  entry = specificationChanges;
-
-  console.log("Insert entry");
-  await executeTransaction(0, 15, client, insertEntry, cb);
-
-  await executeTransaction(0, 15, client, printDatabase, cb);
+  await executeTransaction(0, 15, client, {tableName: tableName, serviceName: serviceName, commit: commit, differences: specificationChanges}, insertEntry, queryCallback);
 }
 
 module.exports = {insert};

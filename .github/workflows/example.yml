@@ -1,0 +1,32 @@
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test job
+    steps:
+      - name: Prepare DB connection
+        run: echo "$DB_CRT" >> db.crt
+        shell: bash
+        env:
+          DB_CRT : ${{ secrets.DB_CRT }}
+      - name: Check out head branch
+        uses: actions/checkout@v2
+        with:
+          path: head
+      - name: Check out main branch
+        uses: actions/checkout@v2
+        with:
+          ref: main
+          path: base
+      - name: CI Privacy Alert Test
+        uses: ./head/
+        id: ci-privacy-alert
+        with:
+          source-specification: base/examples/specification.yml
+          changed-specification: head/examples/specification-changed.yml
+          db-connection: ${{ secrets.DB_CONNECTION_STRING }}
+          db-name: ${{ secrets.DB_NAME }}
+          table-name: ${{ secrets.TABLE_NAME }}
+          service-name: ${{ github.repository }}
+          commit: ${{ github.sha }}

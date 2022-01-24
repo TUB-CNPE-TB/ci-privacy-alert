@@ -11,6 +11,18 @@ inputs:
   db-connection:
     description: 'DB Connection string'
     required: true
+  db-name:
+    description: 'Database name'
+    required: true
+  table-name:
+    description: 'Table name'
+    required: true
+  service-name:
+    description: 'Name of the current serivce'
+    required: true
+  commit:
+    description: 'Hash code of the commit'
+    required: true
   
 runs:
   using: 'docker'
@@ -19,3 +31,7 @@ runs:
     - ${{ inputs.source-specification }}
     - ${{ inputs.changed-specification }}
     - ${{ inputs.db-connection }}
+    - ${{ inputs.db-name }}
+    - ${{ inputs.table-name }}
+    - ${{ inputs.service-name }}
+    - ${{ inputs.commit }}
