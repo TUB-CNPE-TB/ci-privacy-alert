@@ -15,14 +15,34 @@ const db = require("./db");
     const commit = argv._[6]
 
     const sourceSpecification = fs.readFileSync(sourcePath, 'utf8')
-    const sourceSpecificationJSON = yaml.load(sourceSpecification);
+    var sourceSpecificationJSON = undefined;
 
+    if (sourcePath.endsWith(".yml") || sourcePath.endsWith(".yaml")) {
+        sourceSpecificationJSON = yaml.load(sourceSpecification);
+    }
+    else if (sourcePath.endsWith(".json")) {
+        sourceSpecificationJSON = JSON.parse(sourceSpecification);
+    }
+    
     const destinationSpecification = fs.readFileSync(destinationPath, 'utf8')
-    const destinationSpecificationJSON = yaml.load(destinationSpecification);
+    var destinationSpecificationJSON = undefined;
+
+    if (destinationPath.endsWith(".yml") || destinationPath.endsWith(".yaml")) {
+        destinationSpecificationJSON = yaml.load(destinationSpecification);
+    }
+    else if (destinationPath.endsWith(".json")) {
+        destinationSpecificationJSON = JSON.parse(destinationSpecification);
+    }
+
+    if (sourcePath === undefined || destinationPath === undefined) {
+        throw Error("Unsupported specification format! Supported formats: YAML, JSON.");
+    }
 
     var differences = diff(sourceSpecificationJSON, destinationSpecificationJSON);
 
-    await db.insert(connectionString, databaseName, tableName, serviceName, commit, JSON.stringify(differences));
+    if (differences) {
+        await db.insert(connectionString, databaseName, tableName, serviceName, commit, JSON.stringify(differences));
+    }
 
     process.exit();
 
