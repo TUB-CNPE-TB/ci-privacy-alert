@@ -41,7 +41,7 @@ const db = require("./db");
     var differences = diff(sourceSpecificationJSON, destinationSpecificationJSON);
 
     if (differences) {
-        await db.insert(connectionString, databaseName, tableName, serviceName, commit, JSON.stringify(differences));
+        await db.insert(connectionString, databaseName, tableName, serviceName, commit, JSON.stringify(differences), JSON.stringify(sourceSpecificationJSON), JSON.stringify(destinationSpecificationJSON));
     }
 
     process.exit();

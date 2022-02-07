@@ -30,10 +30,10 @@ async function executeTransaction(n, max, client, input, operation, callback) {
 
 async function insertEntry(client, input, callback) {
   const id = await uuidv4();
-  const {tableName, serviceName, commit, differences} = input;
+  const {tableName, serviceName, commit, differences, sourceSpecification, changedSpecification} = input;
   const insertStatement =
-    "INSERT INTO " + tableName + " (id, service_name, commit, differences) VALUES ($1, $2, $3, $4);";
-  await client.query(insertStatement, [id, serviceName, commit, differences], callback);
+    "INSERT INTO " + tableName + " (id, service_name, commit, differences, sourceSpecification, changedSpecification) VALUES ($1, $2, $3, $4, $5, $6);";
+  await client.query(insertStatement, [id, serviceName, commit, differences, sourceSpecification, changedSpecification], callback);
 }
 
 async function printDatabase(client, input, callback) {
@@ -56,7 +56,7 @@ function queryCallback(err, res) {
 }
 
 // Run the transactions in the connection pool
-async function insert(connectionString, databaseName, tableName, serviceName, commit, specificationChanges) {
+async function insert(connectionString, databaseName, tableName, serviceName, commit, specificationChanges, sourceSpecification, changedSpecification) {
   connectionString = await connectionString.replace(
       "$HOME",
       process.env.HOME
@@ -69,7 +69,9 @@ async function insert(connectionString, databaseName, tableName, serviceName, co
 
   const client = await pool.connect();
 
-  await executeTransaction(0, 15, client, {tableName: tableName, serviceName: serviceName, commit: commit, differences: specificationChanges}, insertEntry, queryCallback);
+  await executeTransaction(0, 15, client, 
+    {tableName: tableName, serviceName: serviceName, commit: commit, differences: specificationChanges, sourceSpecification: sourceSpecification, changedSpecification: changedSpecification},
+     insertEntry, queryCallback);
 }
 
 module.exports = {insert};

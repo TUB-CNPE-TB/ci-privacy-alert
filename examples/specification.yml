@@ -27,6 +27,8 @@ paths:
                     type: string
                 required:
                   - id
+                  - name
+                  - age
                 type: object
   /users/{userId}:
     get:

@@ -11,5 +11,7 @@ CREATE TABLE specification_changes (
     created TIMESTAMP DEFAULT now(),
     service_name varchar(100),
     commit varchar(255),
-    differences JSONB
+    differences JSONB,
+    sourceSpecification JSONB,
+    changedSpecification JSONB
 );
