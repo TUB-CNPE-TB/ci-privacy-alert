@@ -30,3 +30,14 @@ jobs:
           table-name: ${{ secrets.TABLE_NAME }}
           service-name: ${{ github.repository }}
           commit: ${{ github.sha }}
+      - name: CI Privacy Alert Test TIRA
+        uses: ./head/
+        id: ci-privacy-alert-tira
+        with:
+          source-specification: base/examples/specification-tira.yml
+          changed-specification: head/examples/specification-tira-changed.yml
+          db-connection: ${{ secrets.DB_CONNECTION_STRING }}
+          db-name: ${{ secrets.DB_NAME }}
+          table-name: ${{ secrets.TABLE_NAME }}
+          service-name: ${{ github.repository }}
+          commit: ${{ github.sha }}

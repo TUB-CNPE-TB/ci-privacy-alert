@@ -1,0 +1,36 @@
+openapi: 3.0.1
+info:
+  title: User Service
+  version: 1.0.0
+paths:
+  /users:
+    x-tira: true
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                x-tira-ignore: true
+                name:
+                  type: int
+              required:
+                - name
+                - id
+              type: object
+        required: false
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                required:
+                  - name
+                  - age
+                type: object
